@@ -1,9 +1,9 @@
-const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
-    const resturaunts = [];
+async function windowActions() {
+    const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
 
-    fetch(endpoint)
-    .then(blob => blob.json())
-    .then(data => resturaunts.push(...data));
+    const request = await fetch(endpoint);
+
+    const resturaunts = await request.json();
 
     function findMatches(zipToMatch, resturaunts) {
         return resturaunts.filter(place => {
@@ -13,14 +13,14 @@ const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json
         });
     }
     
-    function displayMatches() {
-        const matchArray = findMatches(this.value, resturaunts);
+    function displayMatches(event) {
+        const matchArray = findMatches(event.target.value, resturaunts);
         const html = matchArray.map(place => {
-            const regex = new RegExp(this.value, 'gi');
-            const zipCode = place.zip.replace(regex, `<span class="hl">${this.value}</span>`);
-            const rName = place.name.replace(regex, `<span class="hl">${this.value}</span>`);
-            const address = place.address_line_1.replace(regex, `<span class="hl">${this.value}</span>`);
-            const category = place.category.replace(regex, `<span class="hl">${this.value}</span>`);
+            const regex = new RegExp(event.target.value, 'gi');
+            const zipCode = place.zip.replace(regex, `<span class="hl">${event.target.value}</span>`);
+            const rName = place.name.replace(regex, `<span class="hl">${event.target.value}</span>`);
+            const address = place.address_line_1.replace(regex, `<span class="hl">${event.target.value}</span>`);
+            const category = place.category.replace(regex, `<span class="hl">${event.target.value}</span>`);
             
             return `
             <li>
@@ -37,5 +37,8 @@ const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json
     const searchInput = document.querySelector('.search');
     const suggestions = document.querySelector('.suggestions');
 
-    searchInput.addEventListener('change', displayMatches);
-    searchInput.addEventListener('keyup', displayMatches);
+    searchInput.addEventListener('change', (evt) => {displayMatches(evt)});
+    searchInput.addEventListener('keyup', (evt) => {displayMatches(evt)});
+}    
+
+window.onload = windowActions;
