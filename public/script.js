@@ -21,6 +21,7 @@ async function windowActions() {
             const rName = place.name.replace(regex, `<span class="hl">${event.target.value}</span>`);
             const address = place.address_line_1.replace(regex, `<span class="hl">${event.target.value}</span>`);
             const category = place.category.replace(regex, `<span class="hl">${event.target.value}</span>`);
+            const inspectionResults = place.inspection_results.replace(regex, `<span class="hl">${event.target.value}</span>`);
             
             return `
             <li>
@@ -28,6 +29,7 @@ async function windowActions() {
                 <span class="category">${category}</span>
                 <span class="address">${address}</span>
                 <span class="zipcode">${zipCode}</span>
+                <span class="zipcode">Inspection Results: ${inspectionResults}</span>
             </li>
             `;
         }).join('');
